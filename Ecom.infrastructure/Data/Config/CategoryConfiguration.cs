@@ -1,0 +1,20 @@
+﻿using Ecom.Core.Entites.Product;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Ecom.infrastructure.Data.Config;
+
+public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+{
+    public void Configure(EntityTypeBuilder<Category> builder)
+    {
+       builder.Property(x => x.Name).IsRequired().HasMaxLength(30);
+       builder.Property(x => x.Id).IsRequired();
+       builder.HasData(
+       new Category { Id = 1, Name = "Electronics", Description = "Devices and gadgets including smartphones, laptops, and accessories." }
+                  );
+    }
+}
