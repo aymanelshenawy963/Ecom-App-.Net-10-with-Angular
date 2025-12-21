@@ -17,18 +17,6 @@ public class GenericRepositry<T> : IGenericRepositry<T> where T : class
         _context = context;
     }
 
-    public async Task AddAsync(T entity)
-    {
-       await _context.Set<T>().AddAsync(entity);
-       await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var entity = await _context.Set<T>().FindAsync(id);
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
-    }
 
     public async Task<IReadOnlyList<T>> GetAllAsync()
     => await _context.Set<T>().AsNoTracking().ToListAsync();
@@ -61,9 +49,24 @@ public class GenericRepositry<T> : IGenericRepositry<T> where T : class
         return entity;
     }
 
+    public async Task AddAsync(T entity)
+    {
+        await _context.Set<T>().AddAsync(entity);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task UpdateAsync(T entity)
     {
         _context.Entry(entity).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+    }
+
+ 
+
+    public async Task DeleteAsync(int id)
+    {
+        var entity = await _context.Set<T>().FindAsync(id);
+        _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync();
     }
 }

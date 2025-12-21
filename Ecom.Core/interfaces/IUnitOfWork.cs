@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ecom.Core.interfaces;
 
-public interface IUniteOfWork
+public interface IUnitOfWork
 {
     public ICategoryRepository CategoryRepository { get; }
     public IProductRepository ProductRepository { get; }
