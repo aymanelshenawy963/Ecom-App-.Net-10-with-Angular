@@ -2,9 +2,6 @@
 using Ecom.Core.Entites.Product;
 using Ecom.Core.interfaces;
 using Ecom.infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using Ecom.Core.Services;
 using Microsoft.EntityFrameworkCore;

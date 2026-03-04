@@ -1,9 +1,7 @@
 ﻿using Ecom.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Ecom.infrastructure.Repositriers.Service;
 
