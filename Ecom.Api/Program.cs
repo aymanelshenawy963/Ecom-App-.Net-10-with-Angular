@@ -1,11 +1,25 @@
 using Ecom.Api.Middelware;
 using Ecom.infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(op =>
+{
+    op.AddPolicy("CORSPolicy", builder =>
+    {
+        builder.AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials()
+               .WithOrigins("http://localhost:4200");
+    });
+});
 // Add services to the container.
 builder.Services.AddMemoryCache();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+}); 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
@@ -21,13 +35,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("CORSPolicy");
 app.UseMiddleware<ExceptionsMiddleware>();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseStaticFiles();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 
 app.MapControllers();
 

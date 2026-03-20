@@ -1,10 +1,12 @@
-﻿using Ecom.Core.DTO;
+﻿using AutoMapper;
+using Ecom.Core.DTO;
 using Ecom.Core.Entites.Product;
 using Ecom.Core.interfaces;
-using Ecom.infrastructure.Data;
-using AutoMapper;
 using Ecom.Core.Services;
+using Ecom.Core.Sharing;
+using Ecom.infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Ecom.infrastructure.Repositriers;
 
@@ -19,6 +21,46 @@ public class ProductRepository : GenericRepositry<Product>, IProductRepository
         _mapper = mapper;
         _imageMangementService = imageMangementService;
         _context = context;
+    }
+
+    public async Task<ReturnProductDTO> GetAllAsync(ProductParams productParams)
+    {
+        var query = _context.Products
+            .Include(m => m.Category)
+            .Include(m => m.Photos)
+            .AsNoTracking();
+
+        // Filtering by word 
+        if (!string.IsNullOrEmpty(productParams.Search))
+        {
+            var searchWord = productParams.Search.Split(' ');
+
+            query = query.Where(m=>searchWord.All(word =>
+                         m.Name.ToLower().Contains(word.ToLower()) ||
+                         m.Description.ToLower().Contains(word.ToLower()))
+                               );
+        }
+
+        // Filtering by Category
+        if (productParams.CategoryId.HasValue)
+            query = query.Where(m => m.CategoryId == productParams.CategoryId);
+
+        if (!string.IsNullOrEmpty(productParams.Sort))
+        {
+            query = productParams.Sort switch
+            {
+                "priceAsc" => query.OrderBy(m => m.NewPrice),
+                "priceDsc" => query.OrderByDescending(m => m.NewPrice),
+                _ => query.OrderBy(m => m.Name),
+            };
+        }
+
+        ReturnProductDTO returnProductDTO = new ReturnProductDTO();
+        returnProductDTO.TotalCount = query.Count();
+
+        query = query.Skip((productParams.PageSize) * (productParams.PageNumber - 1)).Take(productParams.PageSize);
+        returnProductDTO.Products = _mapper.Map<List<ProductDTO>>(query);
+        return returnProductDTO;
     }
 
     public async Task<bool> AddAsync(AddProductDTO productDTO)

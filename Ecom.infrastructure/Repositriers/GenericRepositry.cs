@@ -69,4 +69,7 @@ public class GenericRepositry<T> : IGenericRepositry<T> where T : class
         _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<int> CountAsync()
+    => await _context.Set<T>().CountAsync();
 }
