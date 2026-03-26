@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+
+    <a routerLink="/" class="navbar-brand d-flex align-items-center">
+      <img src="./favicon.ico" class="logo me-2" alt="">
+      <span class="text-white">E-commerce</span>
+    </a>
+
+    <div class="navbar-collapse">
+
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/shop" class="nav-link" routerLinkActive="active">Shopping</a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/about" class="nav-link" routerLinkActive="active">About us</a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/best-seller" class="nav-link" routerLinkActive="active">Best Seller</a>
+        </li>
+      </ul>
+
+      <!-- Search -->
+      <form class="d-flex mx-auto">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="search...">
+          <button class="btn btn-light">
+            <i class="material-icons">search</i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Right Icons -->
+      <ul class="navbar-nav ml-auto align-items-center">
+        <li class="nav-item"><a href="#" class="nav-link"></a></li>
+
+        <li class="nav-item">
+          <a routerLink="/basket" class="nav-link">
+            <i matBadge="{{(count$ | async)?.basketItems?.length}}" matBadgeColor="warn" class="material-icons">shopping_cart</i>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a (click)="ToggelDropDown()" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">account_circle</i>
+          </a>
+
+          <div [ngClass]="{'show':visible}" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="/account/Register">Register <i class="fa fa-user-plus"></i></a>
+            <a class="dropdown-item" routerLink="/account/Login">Login <i class="fa fa-sign-in"></i></a>
+            <a class="dropdown-item" matBadge="1" matBadgeSize="large" routerLink="/orders">My Orders<i
+                class="fa fa-list"></i></a>
+          </div>
+
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+</nav>

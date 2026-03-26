@@ -1,0 +1,80 @@
+.product-card{
+  border-radius:10px;
+  overflow:hidden;
+  transition:0.3s;
+  background:white;
+}
+
+.product-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+
+/* main image */
+
+.main-image{
+  width:100%;
+  height: 200px;
+  object-fit:fill;
+}
+
+/* container للصور + البوك مارك */
+
+.thumb-bookmark{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+/* thumbnails */
+
+.thumbnails{
+  display:flex;
+  gap:6px;
+}
+
+.thumbnail-img{
+  width:45px;
+  height:45px;
+  object-fit:cover;
+  border:1px solid #ddd;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.card-title{
+  color: #7961ff;
+}
+/* bookmark */
+
+.favorite-icon{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 3px 12px rgba(0,0,0,0.2);
+  cursor:pointer;
+}
+
+.favorite-icon i{
+  color:#7961ff;
+  font-size:16px;
+}
+
+/* price */
+
+.price{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.old-price{
+  text-decoration:line-through;
+  color:red;
+  margin-right:10px;
+}

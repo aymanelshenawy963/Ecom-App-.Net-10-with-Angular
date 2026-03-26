@@ -1,0 +1,104 @@
+/* Navbar Background */
+.navbar {
+    background: linear-gradient(90deg, #2c3e50, #34495e);
+    padding: 10px 20px;
+}
+
+/* Logo */
+.logo {
+    width: 35px;
+    height: 35px;
+}
+
+/* Brand Text */
+.navbar-brand span {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Nav Links */
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 15px;
+    margin-right: 15px;
+    transition: 0.3s;
+  &.active{
+  color: #f1c40f;
+}
+  }
+
+.navbar-nav .nav-link:hover {
+    color: #f1c40f;
+}
+
+/* Search Container */
+.input-group {
+    width: 420px;
+    background: white;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Search Input */
+.input-group input {
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Search Button */
+.input-group button {
+    border: none;
+    background: #f1c40f;
+    padding: 0 18px;
+    transition: 0.3s;
+}
+
+/* Icon */
+.input-group button i {
+    color: #2c3e50;
+}
+
+/* Hover Effect */
+.input-group button:hover {
+    background: #f39c12;
+}
+
+/* Focus Effect */
+.input-group:focus-within {
+    box-shadow: 0 0 8px rgba(241,196,15,0.6);
+}
+
+/* Icons */
+.material-icons {
+    font-size: 24px;
+    color: white;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    border-radius: 10px;
+    padding: 10px 0;
+}
+
+.dropdown-item {
+    transition: 0.3s;
+}
+
+.dropdown-item:hover {
+    background: #f1f1f1;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .input-group {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .navbar-nav {
+        text-align: center;
+    }
+}

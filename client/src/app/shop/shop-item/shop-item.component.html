@@ -1,0 +1,46 @@
+<div class="card product-card h-100">
+
+  <!-- Main Image -->
+  <img src="https://localhost:44361/{{Product.photos[0].imageName}}" class="card-img-top main-image" alt="Laptop">
+
+  <div class="card-body">
+
+    <!-- Thumbnails + Bookmark -->
+    <div class="thumb-bookmark">
+
+      <div class="thumbnails">
+        @for (item of Product.photos; track $index) {
+        <img src="https://localhost:44361/{{item.imageName}}" class="thumbnail-img" alt="">
+        }
+      </div>
+
+      <button class="favorite-icon">
+        <i class="fa fa-bookmark"></i>
+      </button>
+
+    </div>
+
+    <h5 class="card-title">{{Product.name}}</h5>
+
+    <p class="card-text">{{Product.description}}</p>
+
+    <p class="price">
+      <span class="old-price">{{Product.oldPrice | currency}}</span>
+      {{Product.newPrice | currency}}
+    </p>
+
+    <div class="d-flex justify-content-between">
+      <button (click)="SetBasketValue()" class="btn btn-dark">
+        <i class="fa fa-shopping-cart"></i>
+        Add to Cart
+      </button>
+
+      <button routerLink="/product-details/{{Product.id}}" class="btn btn-success">
+        <i class="fa fa-info-circle"></i>
+        Details
+      </button>
+    </div>
+
+  </div>
+
+</div>

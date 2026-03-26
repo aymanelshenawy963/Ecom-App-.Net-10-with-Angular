@@ -1,0 +1,60 @@
+<section class="pt-5">
+  <div class="form-container">
+
+    <h2 class="text-center">Register</h2>
+
+    <form [formGroup]="formGroup" (ngSubmit)="Submit()">
+
+      <!-- UserName -->
+      <div class="form-group">
+        <label for="username">UserName</label>
+        <input type="text" class="form-control" formControlName="userName"
+          [class.is-valid]="_userName.valid" [class.is-invalid]="_userName.invalid && _userName.touched">
+
+          @if(_userName.invalid){
+            <span class="text-danger">UserName is required</span>
+          }
+      </div>
+
+      <!-- Display Name -->
+      <div class="form-group">
+        <label for="displayName">DisplayName</label>
+        <input type="text" class="form-control" formControlName="displayName"
+          [class.is-valid]="_displayName.valid" [class.is-invalid]="_displayName.invalid && _displayName.touched">
+          @if(_displayName.invalid){
+            <span class="text-danger">DisplayName is required</span>
+          }
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" formControlName="email"
+          [class.is-valid]="_email.valid" [class.is-invalid]="_email.invalid && _email.touched">
+          @if(_email.hasError('required')){
+            <span class="text-danger">Email is required</span>
+          }@else if(_email.hasError('email')) {
+            <span class="text-danger">Email formate is required Example:test&#64;gmail.co </span>
+          }
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" formControlName="password"
+          [class.is-valid]="_password.valid" [class.is-invalid]="_password.invalid && _password.touched">
+          @if(_password.hasError('required')){
+            <span class="text-danger">Password is required</span>
+          }@else if(_password.hasError('pattern')) {
+            <span class="text-danger">Password should contain at least one number,one special charcter, and be at least 8 characters long </span>
+          }
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-info w-100 "[disabled]="formGroup.invalid">Register</button>
+      </div>
+
+    </form>
+
+  </div>
+</section>
