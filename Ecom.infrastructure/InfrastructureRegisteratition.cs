@@ -27,6 +27,7 @@ public static class InfrastructureRegisteratition
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IGenerateToken, GenerateToken>();
         services.AddScoped<IAuth, AuthRepository>();
+        services.AddScoped<IOrderService, OrderService> ();
 
 
         services.AddSingleton<IConnectionMultiplexer>(i => {

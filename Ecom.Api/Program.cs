@@ -14,6 +14,8 @@ builder.Services.AddCors(op =>
                .WithOrigins("http://localhost:4200");
     });
 });
+
+
 // Add services to the container.
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -24,8 +26,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.InfrastructureConfiguration(builder.Configuration);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

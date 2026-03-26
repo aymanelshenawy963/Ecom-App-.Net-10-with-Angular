@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Ecom.Api.Helper;
 using Ecom.Core.DTO;
+using Ecom.Core.Entites;
 using Ecom.Core.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Ecom.Api.Controllers;
 
@@ -11,6 +14,33 @@ public class AccountController : BaseController
 {
     public AccountController(IUnitOfWork work, IMapper mapper) : base(work, mapper)
     {
+    }
+    [Authorize]
+    [HttpGet("get-address-for-user")]
+    public async Task<IActionResult> GetAddress()
+    {
+        var address = await work.Auth.GetUserAddress(User.FindFirst(ClaimTypes.Email).Value);
+        var result = mapper.Map<ShippAddressDTO>(address);
+        return Ok( result);
+
+    }
+
+    [Authorize]
+    [HttpPut("update-address")]
+    public async Task<IActionResult> UpdateAddress([FromBody] ShippAddressDTO addressDTO)
+    {
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (email is null)
+            return Unauthorized();
+
+        var address = mapper.Map<Address>(addressDTO);
+
+        var result = await work.Auth.UpdateAddress(email, address);
+
+        return result
+            ? Ok(new ResponseAPI(200, "Address updated successfully"))
+            : BadRequest(new ResponseAPI(400, "Failed to update address"));
     }
 
     [HttpPost("register")]
@@ -27,15 +57,14 @@ public class AccountController : BaseController
     public async Task<IActionResult> Login(LoginDTO loginDTO)
     {
         string result = await work.Auth.LoginAsync(loginDTO);
-        if(result.StartsWith("Please"))
+        if (result.StartsWith("Please"))
             return BadRequest(new ResponseAPI(400, result));
 
         Response.Cookies.Append("token", result, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
-            Domain = "localhost",
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None, // ✅ أهم سطر
             Expires = DateTimeOffset.UtcNow.AddDays(1)
         });
 

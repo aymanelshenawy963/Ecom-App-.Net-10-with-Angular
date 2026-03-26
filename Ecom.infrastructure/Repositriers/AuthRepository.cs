@@ -1,10 +1,13 @@
-﻿using Ecom.Core.DTO;
+﻿using AutoMapper;
+using Ecom.Core.DTO;
 using Ecom.Core.Entites;
 using Ecom.Core.interfaces;
 using Ecom.Core.Services;
 using Ecom.Core.Sharing;
+using Ecom.infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 
@@ -16,13 +19,17 @@ public class AuthRepository : IAuth
     private readonly IEmailService _emailService;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly IGenerateToken _generateToken;
+    private readonly AppDbContext _context;
+    private readonly IMapper _mapper;
 
-    public AuthRepository(UserManager<AppUser> userManager, IEmailService emailService, SignInManager<AppUser> signInManager, IGenerateToken generateToken)
+    public AuthRepository(UserManager<AppUser> userManager, IEmailService emailService, SignInManager<AppUser> signInManager, IGenerateToken generateToken, AppDbContext context, IMapper mapper)
     {
         _userManager = userManager;
         _emailService = emailService;
         _signInManager = signInManager;
         _generateToken = generateToken;
+        _context = context;
+        _mapper = mapper;
     }
 
     public async Task<string> RegisterAsync(RegisterDTO registerDTO)
@@ -141,5 +148,35 @@ public class AuthRepository : IAuth
 
         await SendEmail(user.Email!, encodedToken, "active", "ActiveEmail", "Please activate your email");
         return false;
+    }
+    public async Task<bool> UpdateAddress(string email, Address address)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null)
+            return false;
+
+        var userAddress = await _context.Addresses
+            .FirstOrDefaultAsync(a => a.AppUserId == user.Id);
+
+        if (userAddress is null)
+        {
+            address.AppUserId = user.Id;
+            await _context.Addresses.AddAsync(address);
+        }
+        else
+        {
+            // 🔥 الحل النضيف
+            _mapper.Map(address, userAddress);
+        }
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<Address> GetUserAddress(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        var address = await _context.Addresses.FirstOrDefaultAsync(a => a.AppUserId == user.Id.ToString());
+        return address!;
     }
 }
